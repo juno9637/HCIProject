@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Widget Designer — Site Building Site</title>
+    <link rel="stylesheet" href="global.css">
+    <link rel="stylesheet" href="widgetBuilder.css">
+</head>
+
+<body>
+
+<!-- Top bar (matches index.html) -->
+<header id="topbar">
+    <h2 id="menu-heading"><a href="index.html">Menu</a></h2>
+    <h1 id="site-title">Site Building Site</h1>
+    <h3 id="user-heading">Hi Person!</h3>
+</header>
+
+<main class="frame" aria-label="Widget designer">
+
+    <section class="designer" aria-labelledby="designer-title">
+
+        <h1 id="designer-title" class="section-title">Widget Designer</h1>
+
+        <!-- ── Top row: meta fields + preview + actions ── -->
+        <div class="designer-top">
+
+            <!-- Left: title + description fields -->
+            <div class="meta-fields">
+                <div class="meta-row">
+                    <label class="meta-label" for="widget-title">Title:</label>
+                    <span class="meta-value" id="widget-title">---</span>
+                </div>
+                <div class="meta-row">
+                    <span class="meta-label">Description:</span>
+                </div>
+                <textarea class="description-box" placeholder="" aria-label="Widget description"></textarea>
+            </div>
+
+            <!-- Centre: live preview canvas -->
+            <div class="preview-canvas" aria-label="Widget preview"></div>
+
+            <!-- Right: action buttons -->
+            <div class="designer-actions">
+                <button class="designer-btn" type="button">Preview on Page</button>
+                <button class="designer-btn designer-btn--primary" type="button">Publish</button>
+            </div>
+        </div>
+
+        <!-- ── Tabs ── -->
+        <div class="editor-tabs" role="tablist">
+            <button class="editor-tab editor-tab--active" type="button" role="tab" aria-selected="true">Basic Editor</button>
+            <button class="editor-tab" type="button" role="tab" aria-selected="false">Advanced Editor</button>
+        </div>
+
+        <!-- ── Editor panel ── -->
+        <div class="editor-panel" role="tabpanel">
+            <div class="editor-row">
+                <span class="editor-label">Shape:</span>
+                <div class="shape-dropdown">
+                    <span>RECTANGLE</span>
+                    <span class="shape-dropdown__caret" aria-hidden="true">▾</span>
+                </div>
+            </div>
+            <div class="editor-row">
+                <span class="editor-label">Elements:</span>
+                <button class="add-new-btn" type="button">ADD NEW</button>
+            </div>
+        </div>
+
+    </section>
+</main>
+
+</body>
+</html>

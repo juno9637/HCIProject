@@ -125,6 +125,31 @@ html, body {
     color: #2a2a2a;
 }
 
+#publish-site-btn {
+    border-color: #6fa3ef;
+    color: #6fa3ef;
+}
+
+#publish-site-btn:hover {
+    background: #6fa3ef;
+    color: #2a2a2a;
+}
+
+body.published .container-instance:not(.published-message),
+body.published #widget-drawer-btn,
+body.published #preview-site-btn,
+body.published #publish-site-btn,
+body.published #sidebar {
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+body.published .published-message,
+body.published .published-message * {
+    pointer-events: auto;
+    opacity: 1;
+}
+
 /* ── Sidebar (now on the right, toggleable) ── */
 #sidebar {
     position: fixed;
@@ -217,3 +242,131 @@ body.preview-mode .container-instance {
     cursor: default;
     pointer-events: none;
 }
+
+/* ──────────────────────────────────────────
+   Widget controls (delete × and paint bucket)
+   ────────────────────────────────────────── */
+
+/* Both controls share base styling */
+.widget-control {
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #fff;
+    border: 2px solid #2a2a2a;
+    color: #2a2a2a;
+    font-family: 'Courier New', monospace;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s ease, transform 0.1s ease;
+    z-index: 5;
+    padding: 0;
+}
+
+/* Show the controls when the user hovers the widget */
+.container-instance:hover .widget-control {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.widget-control:hover {
+    transform: scale(1.1);
+}
+
+.widget-control:active {
+    transform: scale(0.95);
+}
+
+/* Delete button — top-right, sticking out slightly from the corner */
+.widget-control--delete {
+    top: -14px;
+    right: -14px;
+}
+
+.widget-control--delete:hover {
+    background: #f4a8a8;
+}
+
+/* Paint bucket — bottom-left, mirroring the delete button's offset */
+.widget-control--paint {
+    bottom: -14px;
+    left: -14px;
+    font-size: 16px;   /* emoji renders smaller */
+}
+
+.widget-control--paint:hover {
+    background: #c4dafa;
+}
+
+/* Hide controls during a drag so they don't flicker / catch clicks */
+.container-instance.dragging .widget-control,
+.container-instance.hovering .widget-control {
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+/* Hide controls in preview mode */
+body.preview-mode .widget-control {
+    display: none;
+}
+
+.hidden {
+    display: none;
+}
+
+/* ──────────────────────────────────────────
+   Paint popover (color pickers)
+   ────────────────────────────────────────── */
+.paint-popover {
+    position: absolute;
+    bottom: -14px;
+    left: 28px;                  /* sit just to the right of the paint button */
+    transform: translateY(100%); /* drop down below the widget */
+    background: #1e1e1e;
+    border: 2px solid #fff;
+    border-radius: 12px;
+    padding: 10px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    z-index: 10;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+}
+
+.paint-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.paint-label {
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    color: #fff;
+    min-width: 50px;
+    user-select: none;
+}
+
+.paint-input {
+    width: 36px;
+    height: 28px;
+    border: 1px solid #fff;
+    border-radius: 6px;
+    background: transparent;
+    cursor: pointer;
+    padding: 0;
+}
+
+/* Strip the default chrome from the color swatch on most browsers */
+.paint-input::-webkit-color-swatch-wrapper { padding: 2px; }
+.paint-input::-webkit-color-swatch { border: none; border-radius: 4px; }
+.paint-input::-moz-color-swatch { border: none; border-radius: 4px; }
