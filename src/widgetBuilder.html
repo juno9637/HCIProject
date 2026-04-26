@@ -32,48 +32,77 @@
             <!-- Left: title + description fields -->
             <div class="meta-fields">
                 <div class="meta-row">
-                    <label class="meta-label" for="widget-title">Title:</label>
-                    <span class="meta-value" id="widget-title">---</span>
+                    <label class="meta-label" for="widget-title-input">Title:</label>
+                    <input type="text" class="title-input" id="widget-title-input" placeholder="---">
                 </div>
                 <div class="meta-row">
-                    <span class="meta-label">Description:</span>
+                    <label class="meta-label" for="widget-description">Description:</label>
                 </div>
-                <textarea class="description-box" placeholder="" aria-label="Widget description"></textarea>
+                <textarea class="description-box" id="widget-description" aria-label="Widget description"></textarea>
             </div>
 
             <!-- Centre: live preview canvas -->
-            <div class="preview-canvas" aria-label="Widget preview"></div>
+            <div class="preview-canvas" aria-label="Widget preview">
+                <div class="preview-shape" id="preview-shape">
+                    <span class="preview-shape__title" id="preview-title"></span>
+                    <span class="preview-shape__desc" id="preview-desc"></span>
+                </div>
+            </div>
 
             <!-- Right: action buttons -->
             <div class="designer-actions">
-                <button class="designer-btn" type="button">Preview on Page</button>
-                <button class="designer-btn designer-btn--primary" type="button">Publish</button>
+                <button class="designer-btn" type="button" id="preview-on-page-btn">Preview on Page</button>
+                <button class="designer-btn designer-btn--primary" type="button" id="publish-btn">Publish</button>
             </div>
         </div>
 
         <!-- ── Tabs ── -->
         <div class="editor-tabs" role="tablist">
-            <button class="editor-tab editor-tab--active" type="button" role="tab" aria-selected="true">Basic Editor</button>
-            <button class="editor-tab" type="button" role="tab" aria-selected="false">Advanced Editor</button>
+            <button class="editor-tab editor-tab--active" type="button" role="tab" aria-selected="true"  data-panel="basic">Basic Editor</button>
+            <button class="editor-tab"                    type="button" role="tab" aria-selected="false" data-panel="advanced">Advanced Editor</button>
         </div>
 
         <!-- ── Editor panel ── -->
         <div class="editor-panel" role="tabpanel">
-            <div class="editor-row">
-                <span class="editor-label">Shape:</span>
-                <div class="shape-dropdown">
-                    <span>RECTANGLE</span>
-                    <span class="shape-dropdown__caret" aria-hidden="true">▾</span>
+
+            <!-- Basic editor view -->
+            <div class="editor-view editor-view--basic" data-view="basic">
+                <div class="editor-row">
+                    <label class="editor-label" for="shape-select">Shape:</label>
+                    <select class="shape-select" id="shape-select">
+                        <option value="rectangle">RECTANGLE</option>
+                        <option value="circle">CIRCLE</option>
+                    </select>
+                </div>
+                <div class="editor-row">
+                    <span class="editor-label">Elements:</span>
+                    <button class="add-new-btn" type="button" id="add-element-btn">ADD NEW</button>
+                </div>
+                <div class="editor-row editor-row--elements">
+                    <div class="elements-list" id="elements-list" aria-live="polite"></div>
                 </div>
             </div>
-            <div class="editor-row">
-                <span class="editor-label">Elements:</span>
-                <button class="add-new-btn" type="button">ADD NEW</button>
+
+            <!-- Advanced editor view (code editor with HTML/CSS/JS sub-tabs) -->
+            <div class="editor-view editor-view--advanced editor-view--hidden" data-view="advanced">
+                <div class="code-editor">
+                    <div class="code-tabs" role="tablist">
+                        <button class="code-tab code-tab--active" type="button" role="tab" aria-selected="true"  data-lang="html">HTML</button>
+                        <button class="code-tab"                  type="button" role="tab" aria-selected="false" data-lang="css">CSS</button>
+                        <button class="code-tab"                  type="button" role="tab" aria-selected="false" data-lang="js">JS</button>
+                    </div>
+                    <div class="code-panel">
+                        <textarea class="code-area code-area--active" data-lang="html" spellcheck="false" placeholder="<!-- Your HTML goes here -->"></textarea>
+                        <textarea class="code-area"                   data-lang="css"  spellcheck="false" placeholder="/* Your CSS goes here */"></textarea>
+                        <textarea class="code-area"                   data-lang="js"   spellcheck="false" placeholder="// Your JS goes here"></textarea>
+                    </div>
+                </div>
             </div>
         </div>
 
     </section>
 </main>
 
+<script src="widgetBuilder.js"></script>
 </body>
 </html>
