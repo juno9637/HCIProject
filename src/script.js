@@ -13,9 +13,9 @@ function GetCanvasCoordinate(clientX, clientY) {
     };
 }
 
-function clampToCanvas(x, y, el) {
-    const maxX = canvas.clientWidth - el.offsetWidth;
-    const maxY = canvas.clientHeight - el.offsetHeight;
+function CanvasClamp(x, y, element) {
+    const maxX = canvas.clientWidth - element.offsetWidth;
+    const maxY = canvas.clientHeight - element.offsetHeight;
     return {
         x: Math.max(0, Math.min(x, maxX)),
         y: Math.max(0, Math.min(y, maxY)),
@@ -23,12 +23,12 @@ function clampToCanvas(x, y, el) {
 }
 
 //Create Container
-function positionElement(element, x, y) {
+function PlaceElement(element, x, y) {
     element.style.left = x + "px";
     element.style.top = y + "px";
 }
 
-function createContainer(type) {
+function CreateContainer(type) {
     const element = document.createElement("div");
     element.classList.add("container-instance", `container-type-${type}`, "hovering");
     canvas.appendChild(element);
@@ -37,18 +37,19 @@ function createContainer(type) {
 
 sidebarButtons.forEach((button) => {
     button.addEventListener("mousedown", (event) => {
+        //When user has already clicked a button and is dragging the element outside the canvas
         if (isDragging) return;
 
         const type = button.dataset.type;
-        const element = createContainer(type);
+        const element = CreateContainer(type);
 
-        // Centre the new container under the cursor
+        //Centre the new container under the cursor
         const offsetX = element.offsetWidth / 2;
         const offsetY = element.offsetHeight / 2;
 
         const { x, y } = GetCanvasCoordinate(event.clientX, event.clientY);
-        const clamped = clampToCanvas(x - offsetX, y - offsetY, element);
-        positionElement(element, clamped.x, clamped.y);
+        const clamped = CanvasClamp(x - offsetX, y - offsetY, element);
+        PlaceElement(element, clamped.x, clamped.y);
 
         isDragging = { element: element, offsetX, offsetY, phase: "spawning" };
     });
@@ -76,8 +77,8 @@ document.addEventListener("mousemove", (event) => {
 
     const { element: element, offsetX, offsetY } = isDragging;
     const { x, y } = GetCanvasCoordinate(event.clientX, event.clientY);
-    const clamped = clampToCanvas(x - offsetX, y - offsetY, element);
-    positionElement(element, clamped.x, clamped.y);
+    const clamped = CanvasClamp(x - offsetX, y - offsetY, element);
+    PlaceElement(element, clamped.x, clamped.y);
 });
 
 //Place Container
@@ -87,7 +88,7 @@ document.addEventListener("mouseup", () => {
     const { element: element, phase } = isDragging;
 
     if (phase === "spawning") {
-        element.classList.remove("hovering");     // solidify the new container
+        element.classList.remove("hovering");
     }
     element.classList.remove("dragging");
     isDragging = null;
