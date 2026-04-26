@@ -36,16 +36,16 @@ function CreateContainer(type) {
     const element = document.createElement("div");
     element.classList.add("container-instance", `container-type-${type}`, "hovering");
 
-    //Build the in-widget controls (delete × + paint bucket)
     AttachWidgetControls(element);
 
     canvas.appendChild(element);
     return element;
 }
 
-// ──────────────────────────────────────────
-// Widget controls: delete (×) and paint bucket
-// ──────────────────────────────────────────
+//--------
+//AI SLOP BEWARE
+//--------
+
 function AttachWidgetControls(element) {
     // Delete button (top-right of widget)
     const deleteBtn = document.createElement("button");
@@ -79,7 +79,7 @@ function HandleDeleteClick(event) {
     widget.remove();
 }
 
-// Open the paint popover for a widget
+//
 function OpenPaintPopover(widget) {
     ClosePaintPopover(); //only one open at a time
 
@@ -105,7 +105,6 @@ function OpenPaintPopover(widget) {
     widget.appendChild(popover);
     activePaintPopover = { widget, popover };
 
-    //Wire up the inputs
     popover.querySelectorAll(".paint-input").forEach((input) => {
         input.addEventListener("input", (e) => {
             const target = e.target.dataset.target;
@@ -125,7 +124,6 @@ function ClosePaintPopover() {
     activePaintPopover = null;
 }
 
-// Convert "rgb(r, g, b)" or "rgba(r, g, b, a)" → "#rrggbb" (color inputs need hex)
 function RgbToHex(rgb) {
     if (!rgb) return null;
     const match = rgb.match(/\d+/g);
@@ -134,7 +132,6 @@ function RgbToHex(rgb) {
     return "#" + [r, g, b].map(n => n.toString(16).padStart(2, "0")).join("");
 }
 
-// Paint button click handler
 function HandlePaintClick(event) {
     const paintBtn = event.target.closest(".widget-control--paint");
     if (!paintBtn) return;
@@ -150,15 +147,17 @@ function HandlePaintClick(event) {
     }
 }
 
-// ──────────────────────────────────────────
-// Spawning widgets from the sidebar
-// ──────────────────────────────────────────
+//xxxxxxxxxxxxx
+
+
+//--------
+//Widget Logic
+//--------
+
 sidebarButtons.forEach((button) => {
     button.addEventListener("mousedown", (event) => {
-        //When user has already clicked a button and is dragging the element outside the canvas
         if (isDragging) return;
 
-        //Don't allow spawning while in preview mode
         if (document.body.classList.contains("preview-mode")) return;
 
         const type = button.dataset.type;
@@ -176,16 +175,11 @@ sidebarButtons.forEach((button) => {
     });
 });
 
-// ──────────────────────────────────────────
-// Pickup / move / place existing widgets
-// ──────────────────────────────────────────
 canvas.addEventListener("mousedown", (event) => {
     if (isDragging) return;
 
-    //Don't allow picking up containers in preview mode
     if (document.body.classList.contains("preview-mode")) return;
 
-    //If the user clicked on a widget control, handle it as a click and DO NOT start a drag.
     if (event.target.closest(".widget-control")) {
         if (event.target.closest(".widget-control--delete")) {
             HandleDeleteClick(event);
@@ -196,7 +190,6 @@ canvas.addEventListener("mousedown", (event) => {
         return;
     }
 
-    //Clicks inside the popover (color picker etc.) shouldn't drag the widget
     if (event.target.closest(".paint-popover")) {
         return;
     }
@@ -204,7 +197,6 @@ canvas.addEventListener("mousedown", (event) => {
     const target = event.target.closest(".container-instance");
     if (!target || target.classList.contains("hovering")) return;
 
-    //Close any open paint popover when starting a drag on a different widget
     if (activePaintPopover && activePaintPopover.widget !== target) {
         ClosePaintPopover();
     }
@@ -228,7 +220,6 @@ document.addEventListener("mousemove", (event) => {
     PlaceElement(element, clamped.x, clamped.y);
 });
 
-//Place Container
 document.addEventListener("mouseup", () => {
     if (!isDragging) return;
 
@@ -241,7 +232,6 @@ document.addEventListener("mouseup", () => {
     isDragging = null;
 });
 
-// Close paint popover when clicking anywhere outside it
 document.addEventListener("mousedown", (event) => {
     if (!activePaintPopover) return;
     if (event.target.closest(".paint-popover")) return;
@@ -249,22 +239,19 @@ document.addEventListener("mousedown", (event) => {
     ClosePaintPopover();
 });
 
-// ──────────────────────────────────────────
-// Widget Drawer toggle (opens/closes the right sidebar)
-// ──────────────────────────────────────────
+//---------
+//Buttons
+//---------
+
 widgetDrawerBtn.addEventListener("click", () => {
     sidebar.classList.toggle("closed");
     widgetDrawerBtn.classList.toggle("active");
 });
 
-// ──────────────────────────────────────────
-// Preview Site toggle (locks the canvas so containers can't be moved)
-// ──────────────────────────────────────────
 previewSiteBtn.addEventListener("click", () => {
     document.body.classList.toggle("preview-mode");
     previewSiteBtn.classList.toggle("active");
 
-    //Close the widget drawer & any open paint popover when entering preview mode
     if (document.body.classList.contains("preview-mode")) {
         sidebar.classList.add("closed");
         widgetDrawerBtn.classList.remove("active");
@@ -279,10 +266,8 @@ previewSiteBtn.addEventListener("click", () => {
 
 publishSiteBtn.addEventListener("click", () => {
     if (document.body.classList.contains("preview-mode")) {
-        // Lock the site permanently
         document.body.classList.add("published");
 
-        // Build the message widget
         const message = document.createElement("div");
         message.classList.add("container-instance", "published-message");
         message.style.backgroundColor = "#f5f5f0";
@@ -300,14 +285,12 @@ publishSiteBtn.addEventListener("click", () => {
         message.style.pointerEvents = "auto";
         message.style.cursor = "default";
 
-        // The text
         const text = document.createElement("span");
         text.textContent = "Site Published!";
         text.style.fontSize = "20px";
         text.style.fontWeight = "600";
         message.appendChild(text);
 
-        // The home button — anchor tag, just like the Menu link
         const homeLink = document.createElement("a");
         homeLink.href = "index.html";
         homeLink.textContent = "Go Home";
@@ -321,8 +304,10 @@ publishSiteBtn.addEventListener("click", () => {
     }
 });
 
+//---------
+//Template Gen
+//---------
 
-// ── Premade widgets on page load ──
 
 if (canvas.dataset.premade === "true") {
     const premadeWidgets = [
