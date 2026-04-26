@@ -1,7 +1,8 @@
-
-
 const canvas = document.getElementById("canvas");
+const sidebar = document.getElementById("sidebar");
 const sidebarButtons = document.querySelectorAll(".sidebar-button");
+const widgetDrawerBtn = document.getElementById("widget-drawer-btn");
+const previewSiteBtn = document.getElementById("preview-site-btn");
 
 let isDragging = null;
 
@@ -40,6 +41,9 @@ sidebarButtons.forEach((button) => {
         //When user has already clicked a button and is dragging the element outside the canvas
         if (isDragging) return;
 
+        //Don't allow spawning while in preview mode
+        if (document.body.classList.contains("preview-mode")) return;
+
         const type = button.dataset.type;
         const element = CreateContainer(type);
 
@@ -58,6 +62,9 @@ sidebarButtons.forEach((button) => {
 //Pickup Placed Container
 canvas.addEventListener("mousedown", (event) => {
     if (isDragging) return;
+
+    //Don't allow picking up containers in preview mode
+    if (document.body.classList.contains("preview-mode")) return;
 
     const target = event.target.closest(".container-instance");
     if (!target || target.classList.contains("hovering")) return;
@@ -92,4 +99,22 @@ document.addEventListener("mouseup", () => {
     }
     element.classList.remove("dragging");
     isDragging = null;
+});
+
+// ── Widget Drawer toggle (opens/closes the right sidebar) ──
+widgetDrawerBtn.addEventListener("click", () => {
+    sidebar.classList.toggle("closed");
+    widgetDrawerBtn.classList.toggle("active");
+});
+
+// ── Preview Site toggle (locks the canvas so containers can't be moved) ──
+previewSiteBtn.addEventListener("click", () => {
+    document.body.classList.toggle("preview-mode");
+    previewSiteBtn.classList.toggle("active");
+
+    //Close the widget drawer when entering preview mode
+    if (document.body.classList.contains("preview-mode")) {
+        sidebar.classList.add("closed");
+        widgetDrawerBtn.classList.remove("active");
+    }
 });

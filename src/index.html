@@ -1,27 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Workspace Prototype</title>
-    <link rel="stylesheet" href="style.css">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Build Your Own Corner of the Internet</title>
+    <link rel="stylesheet" href="global.css">
+    <link rel="stylesheet" href="home.css">
 </head>
-
 <body>
-    <aside id="sidebar">
-        <div class="sidebar-header">Elements</div>
-        <button class="sidebar-button" data-type="0"></button>
-        <button class="sidebar-button" data-type="1"></button>
-        <button class="sidebar-button" data-type="2"></button>
-        <button class="sidebar-button" data-type="3"></button>
-        <button class="sidebar-button" data-type="4"></button>
-        <button class="sidebar-button" data-type="5"></button>
-    </aside>
 
-    <main id="canvas"></main>
+<!-- Top bar (matches scratchBuild.html) -->
+<header id="topbar">
+    <h2 id="menu-heading">Menu</h2>
+    <h1 id="site-title">Site Building Site</h1>
+    <h3 id="user-heading">Sign Up/Login</h3>
+</header>
 
-    <script src="script.js"></script>
+<main class="frame" aria-label="Community page builder">
+
+    <!-- ── Build Your Own Corner section ── -->
+    <section class="section section--build" aria-labelledby="build-your-own-title">
+        <h1 id="build-your-own-title" class="section-title">Build Your Own Corner of the Internet:</h1>
+
+        <div class="build-buttons">
+            <article class="build-card build-card--modify" aria-labelledby="modify-title" aria-describedby="modify-description">
+                <h2 id="modify-title" class="build-card__title">Modify</h2>
+                <p id="modify-description" class="build-card__desc">Start from a template</p>
+            </article>
+
+            <article class="build-card build-card--contribute" aria-labelledby="contribute-title" aria-describedby="contribute-description">
+                <h2 id="contribute-title" class="build-card__title">Contribute</h2>
+                <p id="contribute-description" class="build-card__desc">Grow the community asset library</p>
+            </article>
+
+            <article class="build-card build-card--build" aria-labelledby="build-title" aria-describedby="build-description">
+                <a href="scratchBuild.html" rel="noopener noreferrer" class="build-card__link" aria-labelledby="build-title build-description">
+                    <h2 id="build-title" class="build-card__title">Build</h2>
+                    <p id="build-description" class="build-card__desc">Start from scratch</p>
+                </a>
+            </article>
+        </div>
+
+        <!-- Decorative dots (replacing the original SVG stars) -->
+        <span class="dot dot--yellow dot-1" aria-hidden="true"></span>
+        <span class="dot dot--blue   dot-2" aria-hidden="true"></span>
+        <span class="dot dot--pink   dot-3" aria-hidden="true"></span>
+        <span class="dot dot--yellow dot-4" aria-hidden="true"></span>
+        <span class="dot dot--pink   dot-5" aria-hidden="true"></span>
+        <span class="dot dot--blue   dot-6" aria-hidden="true"></span>
+    </section>
+
+    <!-- ── Explore Community Pages section ── -->
+    <section class="section section--explore" aria-labelledby="explore-community-title">
+        <div class="explore-header">
+            <h2 id="explore-community-title" class="section-title">Explore Community Pages:</h2>
+            <button class="random-btn" type="button" aria-label="Random">
+                <span class="random-btn__icon" aria-hidden="true">🎲</span>
+                <span class="random-btn__label">Random</span>
+            </button>
+        </div>
+
+        <div class="explore-grid">
+            <article class="explore-card explore-card--yellow"><span class="explore-card__name">Name</span></article>
+            <article class="explore-card explore-card--pink"><span class="explore-card__name">Name</span></article>
+            <article class="explore-card explore-card--blue"><span class="explore-card__name">Name</span></article>
+            <article class="explore-card explore-card--pink"><span class="explore-card__name">Name</span></article>
+            <article class="explore-card explore-card--yellow"><span class="explore-card__name">Name</span></article>
+        </div>
+
+        <!-- Decorative dots -->
+        <span class="dot dot--blue   dot-7"  aria-hidden="true"></span>
+        <span class="dot dot--pink   dot-8"  aria-hidden="true"></span>
+        <span class="dot dot--yellow dot-9"  aria-hidden="true"></span>
+        <span class="dot dot--blue   dot-10" aria-hidden="true"></span>
+    </section>
+</main>
 </body>
-
 </html>
